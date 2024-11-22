@@ -17,23 +17,23 @@ from scipy import linalg
 from scipy.sparse import csr_matrix, issparse
 from scipy.spatial.distance import pdist, squareform
 
-from ..base import (
+from sklearn.base import (
     BaseEstimator,
     ClassNamePrefixFeaturesOutMixin,
     TransformerMixin,
     _fit_context,
 )
-from ..decomposition import PCA
-from ..metrics.pairwise import _VALID_METRICS, pairwise_distances
-from ..neighbors import NearestNeighbors
-from ..utils import check_random_state
-from ..utils._openmp_helpers import _openmp_effective_n_threads
-from ..utils._param_validation import Hidden, Interval, StrOptions, validate_params
-from ..utils.validation import _num_samples, check_non_negative
+from sklearn.decomposition import PCA
+from sklearn.metrics.pairwise import _VALID_METRICS, pairwise_distances
+from sklearn.neighbors import NearestNeighbors
+from sklearn.utils import check_random_state
+from sklearn.utils._openmp_helpers import _openmp_effective_n_threads
+from sklearn.utils._param_validation import Hidden, Interval, StrOptions, validate_params
+from sklearn.utils.validation import _num_samples, check_non_negative
 
 # mypy error: Module 'sklearn.manifold' has no attribute '_utils'
 # mypy error: Module 'sklearn.manifold' has no attribute '_barnes_hut_tsne'
-from . import _barnes_hut_tsne, _utils  # type: ignore
+from sklearn.manifold import _barnes_hut_tsne, _utils  # type: ignore
 
 MACHINE_EPSILON = np.finfo(np.double).eps
 
