@@ -40,7 +40,7 @@ class ProductSpace:
             else:
                 print(f"E: dim={space[0]}")
 
-    def sample_clusters(self, num_points, num_classes, cov_scale=0.3, centers=None):
+    def sample_clusters(self, num_points, num_classes, cov_scale=0.3, centers=None, sigma=1.0):
         """Generate data from a wrapped normal mixture on the product space"""
         self.X, self.y, self.means = [], [], []
         classes = WrappedNormalMixture(
@@ -55,7 +55,7 @@ class ProductSpace:
                 seed=self.seed,
                 cov_scale=cov_scale,
             )
-            means = wnm.generate_cluster_means(centers=centers)
+            means = wnm.generate_cluster_means(centers=centers, sigma=sigma)
             covs = [
                 wnm.generate_covariance_matrix(wnm.n_dim, wnm.n_dim + 1, wnm.cov_scale) for _ in range(wnm.num_classes)
             ]
@@ -135,13 +135,13 @@ class WrappedNormalMixture:
         self.origin = np.array([1.0] + [0.0] * self.n_dim)
         
     
-    def generate_cluster_means(self, centers=None):
+    def generate_cluster_means(self, centers=None, sigma=1.0):
         '''
         Generate random cluster means or given cluster means on the manifold, adjusted for curvature.
         '''
 
         if centers is None:
-            centers = self.rng.normal(size=(self.num_classes, self.n_dim))
+            centers = self.rng.normal(size=(self.num_classes, self.n_dim), scale=sigma)
         means = np.concatenate(
             (
                 np.zeros(shape=(self.num_classes, 1)),
